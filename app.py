@@ -3,10 +3,10 @@ import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-UPLOAD_FOLDER = '/home/ec2-user/uploads'
+UPLOAD_FOLDER = '/home/ec2-user'
 os.makedirs(UPLOAD_FOLDER,exist_ok=True)
 
-@app.route('/upload',methods=['POST'])
+@app.route('/uploads',methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
         return jsonify({'Error': 'No file part'}),400
