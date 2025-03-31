@@ -1,23 +1,19 @@
-from flask import Flask,request,jsonify
+from flask import Flask, request
 import os
-from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-UPLOAD_FOLDER = '/home/ec2-user/'
-os.makedirs(UPLOAD_FOLDER,exist_ok=True)
+UPLOAD_FOLDER = '/home/ec2-user/uploads' 
 
-@app.route('/pruebas/',methods=['POST'])
+@app.route('/upload/', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
-        return jsonify({'Error': 'No file part'}),400
-    
+        return 'No se encontro el archivo en la solicitud', 400
     file = request.files['file']
     if file.filename == '':
-        return jsonify({'Error': 'No selected file'}),400
-    
-    filename = secure_filename(file.filename)
-    file.save(os.path.join(UPLOAD_FOLDER,filename))
-    return jsonify({'Message': 'File uploaded','path':f"/files/{filename}"}),200
+        return 'No se selecciono ningún archivo',400
+    file.save(os.path.join(UPLOAD_FOLDER,file.filename))
+    print('EXITO')
+    return "Archivo de Usuario Subido Exitosamente", 200
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000)
+    app.run(port=5000)
